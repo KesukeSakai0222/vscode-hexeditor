@@ -29,6 +29,11 @@
     },
     "virtualWorkspaces": true
   },
+  "activationEvents": [
+    "onCommand:hexEditor.openFile",
+    "onCommand:hexEditor.goToOffset",
+    "onCommand:hexEditor.selectBetweenOffsets"
+  ],
   "contributes": {
     "configuration": [
       {
