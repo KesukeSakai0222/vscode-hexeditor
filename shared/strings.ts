@@ -36,6 +36,7 @@ export interface ILocalizedStrings {
 	readonlyWarning: string;
 	openSettings: string;
 	showDecodedText: string;
+	decodeAsEbcdic: string;
 	bytesPerRow: string;
 	close: string;
 }

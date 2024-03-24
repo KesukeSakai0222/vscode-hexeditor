@@ -1,3 +1,5 @@
+import { ebcdicArray } from "../../shared/util/ebcdicArray";
+
 /** Reads a ULEB128 at offset 0 from the buffer. */
 const getULEB128 = (arrayBuffer: ArrayBuffer) => {
 	const buf = new Uint8Array(arrayBuffer);
@@ -10,7 +12,7 @@ const getULEB128 = (arrayBuffer: ArrayBuffer) => {
 			return "";
 		}
 		const byte: bigint = BigInt(buf[index++]);
-		result |= (byte & 0x7Fn) << shift;
+		result |= (byte & 0x7fn) << shift;
 		if ((0x80n & byte) === 0n) {
 			return result;
 		}
@@ -30,11 +32,11 @@ const getSLEB128 = (arrayBuffer: ArrayBuffer) => {
 			return "";
 		}
 		const byte: bigint = BigInt(buf[index++]);
-		result |= (byte & 0x7Fn) << shift;
-		shift += 7n; 
+		result |= (byte & 0x7fn) << shift;
+		shift += 7n;
 		if ((0x80n & byte) === 0n) {
 			if (shift < 128n && (byte & 0x40n) !== 0n) {
-				result |= (~0n << shift);
+				result |= ~0n << shift;
 				return result;
 			}
 			return result;
@@ -71,6 +73,12 @@ const getFloat16 = (exponentWidth: number, significandPrecision: number) => {
 
 		return sign * 2 ** (e - exponentBias) * (1 + f / 2 ** significandPrecision);
 	};
+};
+
+const getEBCDIC = (arrayBuffer: ArrayBuffer) => {
+	const buf = new Uint8Array(arrayBuffer);
+
+	return ebcdicArray[buf[0]];
 };
 
 export interface IInspectableType {
@@ -112,6 +120,8 @@ const inspectTypesBuilder: IInspectableType[] = [
 
 	{ label: "ULEB128", minBytes: 1, convert: dv => getULEB128(dv.buffer).toString() },
 	{ label: "SLEB128", minBytes: 1, convert: dv => getSLEB128(dv.buffer).toString() },
+
+	{ label: "EBCDIC", minBytes: 1, convert: dv => getEBCDIC(dv.buffer) },
 
 	{
 		label: "float16",

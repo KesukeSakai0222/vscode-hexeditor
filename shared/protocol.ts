@@ -55,6 +55,7 @@ export const enum InspectorLocation {
 
 export interface IEditorSettings {
 	showDecodedText: boolean;
+	decodeAsEbcdic: boolean;
 	columnWidth: number;
 	inspectorType: InspectorLocation;
 	defaultEndianness: Endianness;

@@ -49,6 +49,13 @@ const TextCheckbox: React.FC = () => {
 				checked={settings.showDecodedText}
 				onChange={evt => updateSettings(s => ({ ...s, showDecodedText: evt.target.checked }))}
 			/>
+			<label htmlFor="text-checkbox">{strings.decodeAsEbcdic}</label>
+			<input
+				type="checkbox"
+				id="text-checkbox"
+				checked={settings.decodeAsEbcdic}
+				onChange={evt => updateSettings(s => ({ ...s, decodeAsEbcdic: evt.target.checked }))}
+			/>
 		</>
 	);
 };

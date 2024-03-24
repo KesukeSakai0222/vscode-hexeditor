@@ -33,6 +33,7 @@ import { flattenBuffers, getCorrectArrayBuffer, randomString } from "./util";
 const defaultEditorSettings: Readonly<IEditorSettings> = {
 	columnWidth: 16,
 	showDecodedText: true,
+	decodeAsEbcdic: false,
 	defaultEndianness: Endianness.Little,
 	inspectorType: InspectorLocation.Aside,
 };
@@ -243,6 +244,7 @@ export class HexEditorProvider implements vscode.CustomEditorProvider<HexDocumen
 			readonlyWarning: vscode.l10n.t("Cannot edit in read-only editor."),
 			openSettings: vscode.l10n.t("Open Settings"),
 			showDecodedText: vscode.l10n.t("Show Decoded Text"),
+			decodeAsEbcdic: vscode.l10n.t("Decode as EBCDIC"),
 			bytesPerRow: vscode.l10n.t("Bytes per row"),
 			close: vscode.l10n.t("Close"),
 		};

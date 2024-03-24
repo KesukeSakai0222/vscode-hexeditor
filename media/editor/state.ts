@@ -167,6 +167,11 @@ export const showDecodedText = selector({
 	get: ({ get }) => get(editorSettings).showDecodedText,
 });
 
+export const decodeAsEbcdic = selector({
+	key: "decodeAsEbcdic",
+	get: ({ get }) => get(editorSettings).decodeAsEbcdic,
+});
+
 // Atom used to invalidate data when a reload is requested.
 const reloadGeneration = atom({
 	key: "reloadGeneration",

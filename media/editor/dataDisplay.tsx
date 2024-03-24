@@ -25,6 +25,7 @@ import {
 	clamp,
 	clsx,
 	getAsciiCharacter,
+	getEbcdicCharacter,
 	getScrollDimensions,
 	throwOnUndefinedAccessInDev,
 } from "./util";
@@ -305,6 +306,7 @@ const DataRows: React.FC = () => {
 	const offset = useRecoilValue(select.offset);
 	const columnWidth = useRecoilValue(select.columnWidth);
 	const showDecodedText = useRecoilValue(select.showDecodedText);
+	const decodeAsEbcdic = useRecoilValue(select.decodeAsEbcdic);
 	const dimensions = useRecoilValue(select.dimensions);
 	const fileSize = useRecoilValue(select.fileSize) ?? Infinity;
 
@@ -328,6 +330,7 @@ const DataRows: React.FC = () => {
 				top={((i - offset) / columnWidth) * dimensions.rowPxHeight}
 				columnWidth={columnWidth}
 				showDecodedText={showDecodedText}
+				decodeAsEbcdic={decodeAsEbcdic}
 				fileSize={fileSize}
 				dimensions={dimensions}
 			/>,
@@ -376,6 +379,7 @@ interface IDataPageProps {
 	columnWidth: number;
 	fileSize: number;
 	showDecodedText: boolean;
+	decodeAsEbcdic: boolean;
 	dimensions: select.IDimensions;
 }
 
@@ -431,6 +435,7 @@ const DataPageContents: React.FC<IDataPageProps> = props => {
 					)}
 					width={props.columnWidth}
 					showDecodedText={props.showDecodedText}
+					decodeAsEbcdic={props.decodeAsEbcdic}
 				/>
 			))}
 		</>
@@ -636,8 +641,9 @@ const DataRowContents: React.FC<{
 	offset: number;
 	width: number;
 	showDecodedText: boolean;
+	decodeAsEbcdic: boolean;
 	rawBytes: Uint8Array;
-}> = ({ offset, width, showDecodedText, rawBytes }) => {
+}> = ({ offset, width, showDecodedText, decodeAsEbcdic, rawBytes }) => {
 	let memoValue = "";
 	for (const byte of rawBytes) {
 		memoValue += "," + byte;
@@ -663,7 +669,7 @@ const DataRowContents: React.FC<{
 			);
 
 			if (showDecodedText) {
-				const char = getAsciiCharacter(value);
+				const char = decodeAsEbcdic ? getEbcdicCharacter(value) : getAsciiCharacter(value);
 				chars.push(
 					<DataCell
 						key={i}
@@ -678,7 +684,7 @@ const DataRowContents: React.FC<{
 			}
 		}
 		return { bytes, chars };
-	}, [memoValue, showDecodedText]);
+	}, [memoValue, showDecodedText, decodeAsEbcdic]);
 
 	return (
 		<>

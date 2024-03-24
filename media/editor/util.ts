@@ -3,6 +3,7 @@
 
 // Assorted helper functions
 
+import { ebcdicArray } from "../../shared/util/ebcdicArray";
 import { Range } from "../../shared/util/range";
 import _style from "./util.css";
 
@@ -81,6 +82,11 @@ export const getAsciiCharacter = (byte: number): string | undefined => {
 	} else {
 		return String.fromCharCode(byte);
 	}
+};
+
+export const getEbcdicCharacter = (byte: number): string | undefined => {
+	const char = ebcdicArray[byte];
+	return char === " " ? undefined : char;
 };
 
 /**
